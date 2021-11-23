@@ -1,0 +1,214 @@
+{
+    "openapi": "3.0.0",
+    "info":{
+        "title":"UserManagementDoc",
+        "description":"This Api manages users",
+        "version":"1.0.0",
+        "contact":{
+            "email":"dev@egmail.com"
+        }
+    },
+    "paths":{
+        "/users":{
+            "post":{
+                "tags":["Users"],
+                "summary": "Create user",
+                "description": "Creates a new user",
+                "requestBody":{
+                    "required":true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    }
+                                },
+                                "example":{
+                                    "name":"UserTest",
+                                    "email":"user@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"Created",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "admin": false,
+                                    "id": "344b1d84-1b28-4793-9ab7-93a0a503ca85",
+                                    "name": "marcos",
+                                    "email": "mvsa@mvsa.com",
+                                    "created_at": "2021-11-23T18:29:29.922Z",
+                                    "updated_at": "2021-11-23T18:29:29.922Z"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"Email already taken",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "error": "Email already taken"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "tags":["Users"],
+                "summary": "Get user list",
+                "description":"Get users list if it's admin",
+                "parameters":[
+                    {
+                        "in": "header",
+                        "name":"user_id",
+                        "required": true,
+                        "schema":{
+                            "type":"string",
+                            "format":"uuid"
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Success",
+                        "content":{
+                            "application/json":{
+                                "example":[{
+                                    "admin": false,
+                                    "id": "344b1d84-1b28-4793-9ab7-93a0a503ca85",
+                                    "name": "marcos",
+                                    "email": "mvsa@mvsa.com",
+                                    "created_at": "2021-11-23T18:29:29.922Z",
+                                    "updated_at": "2021-11-23T18:29:29.922Z"
+                                },
+                                {
+                                    "admin": false,
+                                    "id": "344b1d84-1b28-4793-9ab7-93a0a5023a85",
+                                    "name": "vinicios",
+                                    "email": "mvsa@mvsa.com",
+                                    "created_at": "2021-11-23T18:29:29.922Z",
+                                    "updated_at": "2021-11-23T18:29:29.922Z"
+                                }]
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"Not authorized",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "error": "Not Authorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/:user_id/admin":{
+            "patch":{
+                "tags":["Users"],
+                "summary":"Turn admin",
+                "description":"Turn user in admin based on its uuid",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name": "user_id",
+                        "description":"Id do usuário",
+                        "required":true,
+                        "schema":{
+                            "type":"string",
+                            "format":"uuid"
+                        }
+
+                    }
+                ],
+                "responses":{
+                    "201":{
+                        "description":"Success",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "admin": true,
+                                    "id": "344b1d84-1b28-4793-9ab7-93a0a503ca85",
+                                    "name": "marcos",
+                                    "email": "mvsa@mvsa.com",
+                                    "created_at": "2021-11-23T18:29:29.922Z",
+                                    "updated_at": "2021-11-23T18:29:29.922Z"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description":"User not found",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "error": "User not found"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/:user_id":{
+            "get":{
+                "tags":["Users"],
+                "summary":"Get user",
+                "description":"Get user data with a given id",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"user_id",
+                        "descriprion":"Id do usuário",
+                        "required":true,
+                        "schema":{
+                            "type":"string",
+                            "format":"uuid"
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Success",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "admin": false,
+                                    "id": "344b1d84-1b28-4793-9ab7-93a0a503ca85",
+                                    "name": "marcos",
+                                    "email": "mvsa@mvsa.com",
+                                    "created_at": "2021-11-23T18:29:29.922Z",
+                                    "updated_at": "2021-11-23T18:29:29.922Z"
+                                }
+                            }
+                        }
+                    },
+                    "403":{
+                        "description":"User not found",
+                        "content":{
+                            "application/json":{
+                                "example":{
+                                    "error": "User not found"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+
+}
